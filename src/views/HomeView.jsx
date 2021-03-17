@@ -16,7 +16,6 @@ class HomeView extends Component {
   render() {
     return (
       <div>
-        <p>helloooooo</p>
         <ul>
           {this.state.countries.map((country) => (
             <li key={country.cca3}>
