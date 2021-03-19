@@ -1,39 +1,66 @@
 import React, { Component } from 'react';
+import countries from '../countries.json';
 
-import countries from './../countries.json';
+import { Link } from 'react-router-dom';
 
 class CountryDetail extends Component {
   state = {
-    country: [],
+    country: null,
   };
 
-  componentDidMount(previousProps) {
+  componentDidMount() {
+    console.log('component did Mount');
+    this.loadCountry();
+  }
+
+  componentDidUpdate(previousProps) {
     if (this.props.match.params.id !== previousProps.match.params.id) {
       this.loadCountry();
     }
   }
 
   loadCountry = () => {
-    console.log(countries);
     const country = countries.find(
-      (item) => item.id === this.props.match.params.id
+      (item) => item.cca3 === this.props.match.params.id
     );
-    console.log(country);
-    this.setState({
-      country: country,
-    });
+    console.log('country:', country);
+    this.setState({ country: country });
   };
 
   render() {
-    const country = this.state.country;
     return (
       <div>
-        <h1>{this.props.match.params.id}</h1>
-        <p>{country.name}</p>
-        <p>{country.capital}</p>
-        <p>{country.region}</p>
-        <p>{country.subsegion}</p>
-        <p>{country.languages}</p>
+        {this.state.country && (
+          <div className="col-7">
+            <h1>{this.state.country.name.common}</h1>
+            <table className="table">
+              <thead></thead>
+              <tbody>
+                <tr>
+                  <td style={{ maxWidth: '30%' }}>Capital</td>
+                  <td>{this.state.country.capital}</td>
+                </tr>
+                <tr>
+                  <td>Area</td>
+                  <td>
+                    {this.state.country.area} km
+                    <sup>2</sup>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Borders</td>
+                  <td>
+                    <ul>
+                      {this.state.country.borders.map((border) => (
+                        <li>Link</li>
+                      ))}
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     );
   }
